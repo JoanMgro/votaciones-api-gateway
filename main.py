@@ -93,7 +93,7 @@ def validarPermiso(endPoint,metodo,idRol):
 
 
 ################################################
-#Endpoint administrador
+#Endpoint administrador - Candidatos
 
 @app.route("/candidatos",methods=['GET'])
 def getCandidatos():
@@ -134,7 +134,159 @@ def eliminarCandidato(id):
     json = response.json()
     return jsonify(json)
 
+@app.route('/candidatos/<id_candidato>/partidos/<id_partido>', methods=['PUT'])
+def asignarPartidoACandidato(id_candidato, id_partido):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/candidatos/' + id_candidato + '/partidos/' + id_partido
+    response = requests.put(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+###########################################################
+#Endpoint administrador - Mesas
 
+@app.route("/mesas",methods=['GET'])
+def getMesas():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/mesas'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+@app.route("/mesas/crear",methods=['POST'])
+def crearMesa():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/mesas/crear'
+    response = requests.post(url, headers=headers,json=data)
+    json = response.json()
+    return jsonify(json)
+@app.route("/mesas/ver/<string:id>",methods=['GET'])
+def getMesa(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/mesas/ver/'+id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+@app.route("/mesas/modificar/<string:id>",methods=['PUT'])
+def modificarMesa(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/mesas/modificar/'+id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+@app.route("/mesas/eliminar/<string:id>",methods=['DELETE'])
+def eliminarMesa(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/mesas/eliminar/' + id
+    response = requests.delete(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+###########################################################
+#Endpoint administrador - Partidos
+
+@app.route("/partidos",methods=['GET'])
+def getpartidos():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/partidos'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+@app.route("/partidos/crear",methods=['POST'])
+def crearPartido():
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/partidos/crear'
+    response = requests.post(url, headers=headers,json=data)
+    json = response.json()
+    return jsonify(json)
+@app.route("/partidos/ver/<string:id>",methods=['GET'])
+def getPartido(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/partidos/ver/'+id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+@app.route("/partidos/modificar/<string:id>",methods=['PUT'])
+def modificarPartido(id):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/partidos/modificar/'+id
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+@app.route("/partidos/eliminar/<string:id>",methods=['DELETE'])
+def eliminarPartido(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/partidos/eliminar/' + id
+    response = requests.delete(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+###########################################################
+#Endpoint administrador - Resultados
+
+@app.route("/resultados",methods=['GET'])
+def getResultados():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+@app.route("/resultados/crear/<id_candidato>/mesa/<id_mesa>",methods=['POST'])
+def crearResultado(id_candidato, id_mesa):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados/crear/' + id_candidato + '/mesa/' + id_mesa
+    response = requests.post(url, headers=headers,json=data)
+    json = response.json()
+    return jsonify(json)
+@app.route("/resultados/ver/<string:id>",methods=['GET'])
+def getResultado(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados/ver/'+id
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+@app.route('/resultados/modificar/<id>/candidato/<id_candidato>/mesa/<id_mesa>', methods =['PUT'])
+def modificarResultado(id, id_candidato, id_mesa):
+    data = request.get_json()
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados/modificar/'+id + '/candidato/' + id_candidato + '/mesa/' + id_mesa
+    response = requests.put(url, headers=headers, json=data)
+    json = response.json()
+    return jsonify(json)
+@app.route("/resultados/eliminar/<string:id>",methods=['DELETE'])
+def eliminarResultado(id):
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados/eliminar/' + id
+    response = requests.delete(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+###########################################################
+#Endpoint administrador - Operaciones resultados
+
+@app.route("/resultados/votos-total-candidatos",methods=['GET'])
+def getVotosTotales():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados/votos-total-candidatos'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
+
+
+
+@app.route("/resultados/participacion-mesa",methods=['GET'])
+def getParticipacionMesa():
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    url = server_config["url-backend-transaccional"] + '/resultados/participacion-mesa'
+    response = requests.get(url, headers=headers)
+    json = response.json()
+    return jsonify(json)
 ################################################
 ## Test service
 
